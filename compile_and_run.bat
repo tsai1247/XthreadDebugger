@@ -1,4 +1,4 @@
 cls
-javac -g -cp "/Library/Java/JavaVirtualMachines/jdk17.0.2.jdk/Contents/Home/lib/tools.jar" ./*.java
+javac -d ./out ./*.java
 cls
-java Main
+java -cp ./out ./Main.java

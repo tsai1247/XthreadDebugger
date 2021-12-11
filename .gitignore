@@ -27,3 +27,6 @@ hs_err_pid*
 
 # temporary file
 *.tmpjava
+
+# Visual Studio
+.vs

@@ -15,9 +15,7 @@ public class Run {
             System.out.println("----Thread " + thread_name + " start----");
             Timer timer = new Timer();
             timer.schedule(new ThreadTimerTask(event), 1000);
-            // System.out.println();
-            // event.thread().isCollected();
-            // System.out.println("Timeout");
+
         }
     }
 
