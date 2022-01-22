@@ -12,9 +12,11 @@ public class VMPreparation {
     }
 
     public static void enableClassPrepareRequest() {
+
         for (String classname : Variables.classname_map.keySet()) {
             ClassPrepareRequest classPrepareRequest = Variables.vm.eventRequestManager().createClassPrepareRequest();
             classPrepareRequest.addClassFilter(classname);
+            System.out.println("enbale className: " + classname);
             classPrepareRequest.enable();
         }
     }

@@ -2,6 +2,7 @@ import java.util.*;
 import java.lang.String;
 import com.sun.jdi.*;
 import com.sun.jdi.event.*;
+import com.sun.jdi.request.EventRequest;
 
 public class Run {
 
@@ -18,12 +19,18 @@ public class Run {
 
         }
     }
-
+    
     public void doContextSwitchPoint(BreakpointEvent event) {
-        for (ThreadReference cur_thread : Variables.TRP_table.values()) {
-            if (!cur_thread.isSuspended())
-                cur_thread.suspend();
+        for(int i=0; i<Variables.vm.allThreads().size(); i++)// var i: Variables.vm.allThreads())
+        {
+            if(Variables.TRP_table.keySet().contains(Variables.vm.allThreads().get(i).name()))
+            {
+                if (!Variables.vm.allThreads().get(i).isSuspended())
+                    Variables.vm.allThreads().get(i).suspend();
+            }
         }
+
+        
         String thread_name = Variables.thread_name_table.get(event.thread());
         System.out.println("thread:" + thread_name + " do CSP");
         IO.printAllthreadStatus(Variables.vm, "ALL THREADS IN TRP", event.thread());
@@ -35,16 +42,21 @@ public class Run {
         String selected_thread = input.next();
 
         System.out.println();
-        for (ThreadReference cur_thread : Variables.TRP_table.values()) {
-            if (Variables.thread_name_table.get(cur_thread).equals(selected_thread) && cur_thread.isSuspended()) {
-                cur_thread.resume();
-                // System.out.println(cur_thread.isSuspended());
-                IO.printAllthreadStatus(Variables.vm, cur_thread.name() + " resume", event.thread());
-                // IO.printBuffer();
-                System.out.println();
+
+        for(int i=0; i<Variables.vm.allThreads().size(); i++)// var i: Variables.vm.allThreads())
+        {
+            if(Variables.TRP_table.keySet().contains(Variables.vm.allThreads().get(i).name()))
+            {
+                if ( Variables.vm.allThreads().get(i).name().equals(selected_thread) && Variables.vm.allThreads().get(i).isSuspended()) 
+                {
+                    Variables.vm.allThreads().get(i).resume();
+                    // System.out.println(cur_thread.isSuspended());
+                    IO.printAllthreadStatus(Variables.vm, selected_thread + " resume", event.thread());
+                    // IO.printBuffer();
+                    System.out.println();
+                }
             }
         }
-
     }
 
     public void doNamingPoint(BreakpointEvent event) {

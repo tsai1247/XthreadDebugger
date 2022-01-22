@@ -71,15 +71,19 @@ public class IO {
     public static void printAllthreadStatus(VirtualMachine vm, String title, ThreadReference tr) {
         System.out.println("-" + title + "-");
         // System.out.println(">> threadcount " + threadcnt.get(tr.name()));
-        for (Map.Entry<String, ThreadReference> entry : Variables.TRP_table.entrySet()) {
-            System.out.print(entry.getKey() + ": ");
-            if (entry.getValue().isSuspended()) {
-                System.out.println("Suspend");
-            } else {
-                System.out.println("Resume");
+        for(int i=0; i<Variables.vm.allThreads().size(); i++)// var i: Variables.vm.allThreads())
+        {
+            if(Variables.TRP_table.keySet().contains(Variables.vm.allThreads().get(i).name()))
+            {
+                System.out.print(Variables.vm.allThreads().get(i).name() + ": ");
+                if (Variables.vm.allThreads().get(i).isSuspended()) {
+                    System.out.println("Suspend");
+                } else {
+                    System.out.println("Resume");
+                }
             }
-
         }
+        
         // System.out.println("---------------");
         // System.out.println(">> Queue Size: " + threadSteps.size());
         // System.out.println("---------------\n");

@@ -1,43 +1,36 @@
 public class Debuggee {
-    public static void main(String[] args) {
-        Integer The_Integer = Integer.valueOf(-1);
-        TargetMethod tm = new TargetMethod(The_Integer);
-        Thread[] allThreads = new Thread[3];
+    public static void main(String[] args) throws InterruptedException {
+        Thread[] allThreads = new Thread[2];
         for(int i=0; i<allThreads.length; i++)
-            allThreads[i] = new Thread(new TargetThread(tm, i), String.valueOf((char)('A'+i*2)) + String.valueOf((char)('A'+i*2+1)) );
-        for(Thread thread:allThreads)
-            thread.start();
+            allThreads[i] = new Thread(new TargetThread(i), String.valueOf((char)('A'+i*2)) + String.valueOf((char)('A'+i*2+1)) );
+        for(int i=0; i<allThreads.length; i++)
+            allThreads[i].start();
+        for(int i=0; i<allThreads.length; i++)
+            allThreads[i].join(1000000);
     }
 }
 class TargetThread implements Runnable{
-    
-    private TargetMethod tm;
-    private Integer the_Integer;
     private int type;
 
-    public TargetThread(TargetMethod tm, int type)
+    public TargetThread(int type)
     {
-        this.tm = tm;
         this.type = type;
-        this.the_Integer = tm.getInteger();;
     }
     @Override
     public void run() {
         switch(type)
         {
             case 0:
-                tm.A();
-                tm.B();
+                for (int i = 0; i < 100; i++)
+                    Log.LogAppend("A");
+                for (int i = 0; i < 100; i++)
+                    Log.LogAppend("B");
                 break;
             case 1:
-                tm.C();
-                tm.D();
-                break;
-            case 2:
-                tm.E();
-                tm.F();
-                break;
-            default:
+                for (int i = 0; i < 100; i++)
+                    Log.LogAppend("C");
+                for (int i = 0; i < 100; i++)
+                    Log.LogAppend("D");
                 break;
         }
         return;
