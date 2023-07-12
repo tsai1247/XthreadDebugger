@@ -51,6 +51,7 @@ public class VMPreparation {
         for (int lineNumber : newBreakPointLines) {
             Location location = classType.locationsOfLine(lineNumber).get(0);
             BreakpointRequest bpReq = Variables.vm.eventRequestManager().createBreakpointRequest(location);
+            bpReq.setSuspendPolicy(EventRequest.SUSPEND_ALL);
             bpReq.enable();
         }
     }
@@ -61,6 +62,7 @@ public class VMPreparation {
             enableClassPrepareRequest();
             enableThreadStartRequest();
             enableThreadDeathRequest();
+
             // enableThreadStartRequest(Variables.vm);
             // enableThreadDeathRequest(Variables.vm);
         } catch (Exception e) {
